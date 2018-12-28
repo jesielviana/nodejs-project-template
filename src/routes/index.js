@@ -1,9 +1,9 @@
 import express from 'express';
-import usuariosRoute from './usuarios';
+import usuariosRoute from './users-route';
 
 const router = express.Router();
 
-router.use('/usuarios', usuariosRoute);
-router.get('/', (req, res) => res.send('Hello World!'));
+router.use('/users', usuariosRoute);
+router.get('/', (req, res) => res.send('App Online!'));
 
 export default router;

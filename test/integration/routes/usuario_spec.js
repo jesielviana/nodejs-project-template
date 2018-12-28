@@ -1,33 +1,33 @@
+/* global setupApp supertest expect */
+
 import Usuario from '../../../src/models/usuario';
 
 describe('Routes: Usuarios', () => {
   let request;
 
-  before(()=> {
-    return setupApp()
-      .then(app => {
-        request = supertest(app)
-      });
-  });
+  before(() => setupApp()
+    .then((app) => {
+      request = supertest(app);
+    }));
 
   const defaultId = '56cb91bdc3464f14678934ca';
   const defaulAlteracao = new Date().toISOString();
 
   const defaultUsuario = {
     nome: 'Default usuario',
-    alteracao: defaulAlteracao
+    alteracao: defaulAlteracao,
   };
   const expectedUsuario = {
     __v: 0,
     _id: defaultId,
     nome: 'Default usuario',
-    alteracao: defaulAlteracao
-  }
+    alteracao: defaulAlteracao,
+  };
 
   beforeEach(() => {
     const usuario = new Usuario(defaultUsuario);
     usuario._id = '56cb91bdc3464f14678934ca';
-    return Usuario.remove({})
+    return Usuario.deleteMany({})
       .then(() => usuario.save());
   });
 
@@ -36,8 +36,7 @@ describe('Routes: Usuarios', () => {
   after(() => process.exit());
 
   describe('GET /usuarios', () => {
-    it('should return a list of usuarios', done => {
-
+    it('should return a list of usuarios', (done) => {
       request
         .get('/usuarios')
         .end((err, res) => {
@@ -46,9 +45,8 @@ describe('Routes: Usuarios', () => {
         });
     });
 
-    context('when an id is specified', done => {
-      it('should return 200 with one usuario', done => {
-
+    context('when an id is specified', () => {
+      it('should return 200 with one usuario', (done) => {
         request
           .get(`/usuarios/${defaultId}`)
           .end((err, res) => {
@@ -62,15 +60,14 @@ describe('Routes: Usuarios', () => {
 
   describe('POST /usuarios', () => {
     context('when posting a usuario', () => {
-
-      it('should return a new usuario with status code 201', done => {
+      it('should return a new usuario with status code 201', (done) => {
         const customId = '56cb91bdc3464f14678934ba';
-        const newUsuario = Object.assign({},{ _id: customId, __v:0 }, defaultUsuario);
+        const newUsuario = Object.assign({}, { _id: customId, __v: 0 }, defaultUsuario);
         const expectedSavedUsuario = {
           __v: 0,
           _id: customId,
           nome: 'Default usuario',
-          alteracao: defaulAlteracao
+          alteracao: defaulAlteracao,
         };
 
         request
@@ -87,11 +84,11 @@ describe('Routes: Usuarios', () => {
 
   describe('PUT /usuarios/:id', () => {
     context('when editing a usuario', () => {
-      it('should update the usuario and return 200 as status code', done => {
+      it('should update the usuario and return 200 as status code', (done) => {
         const customUsuario = {
-          name: 'Custom name'
+          name: 'Custom name',
         };
-        const updatedUsuario = Object.assign({}, customUsuario, defaultUsuario)
+        const updatedUsuario = Object.assign({}, customUsuario, defaultUsuario);
 
         request
           .put(`/usuarios/${defaultId}`)
@@ -106,8 +103,7 @@ describe('Routes: Usuarios', () => {
 
   describe('DELETE /usuarios/:id', () => {
     context('when deleting a usuario', () => {
-      it('should delete a usuario and return 204 as status code', done => {
-
+      it('should delete a usuario and return 204 as status code', (done) => {
         request
           .delete(`/usuarios/${defaultId}`)
           .end((err, res) => {

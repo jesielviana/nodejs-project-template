@@ -5,20 +5,20 @@ import Usuario from '../../../src/models/usuario';
 describe('Controller: Usuarios', () => {
   const defaultUsuario = [{
     __v: 0,
-    _id: "56cb91bdc3464f14678934ca",
+    _id: '56cb91bdc3464f14678934ca',
     nome: 'Default usuario',
     cpf: '12345678901',
-    dataNascimento: new Date('01.02.2012')
+    dataNascimento: new Date('01.02.2012'),
   }];
 
   const defaultRequest = {
-    params: {}
+    params: {},
   };
 
   describe('get() usuarios', () => {
     it('should call send with a list of usuarios', () => {
       const response = {
-        send: sinon.spy()
+        send: sinon.spy(),
       };
       Usuario.find = sinon.stub();
 
@@ -36,7 +36,7 @@ describe('Controller: Usuarios', () => {
       const request = {};
       const response = {
         send: sinon.spy(),
-        status: sinon.stub()
+        status: sinon.stub(),
       };
 
       response.status.withArgs(400).returns(response);
@@ -50,7 +50,6 @@ describe('Controller: Usuarios', () => {
           sinon.assert.calledWith(response.send, 'Error');
         });
     });
-
   });
 
   describe('getById()', () => {
@@ -58,11 +57,11 @@ describe('Controller: Usuarios', () => {
       const fakeId = 'a-fake-id';
       const request = {
         params: {
-          id: fakeId
-        }
+          id: fakeId,
+        },
       };
       const response = {
-        send: sinon.spy()
+        send: sinon.spy(),
       };
 
       Usuario.find = sinon.stub();
@@ -82,7 +81,7 @@ describe('Controller: Usuarios', () => {
       const requestWithBody = Object.assign({}, { body: defaultUsuario[0] }, defaultRequest);
       const response = {
         send: sinon.spy(),
-        status: sinon.stub()
+        status: sinon.stub(),
       };
       class fakeUsuario {
         save() {}
@@ -103,7 +102,7 @@ describe('Controller: Usuarios', () => {
       it('should return 422', () => {
         const response = {
           send: sinon.spy(),
-          status: sinon.stub()
+          status: sinon.stub(),
         };
 
         class fakeUsuario {
@@ -130,16 +129,16 @@ describe('Controller: Usuarios', () => {
         _id: fakeId,
         nome: 'Default usuario',
         cpf: 'usuario description',
-        dataNascimento: new Date('01.02.2012')
+        dataNascimento: new Date('01.02.2012'),
       };
       const request = {
         params: {
-          id: fakeId
+          id: fakeId,
         },
-        body: updatedUsuario
+        body: updatedUsuario,
       };
       const response = {
-        sendStatus: sinon.spy()
+        sendStatus: sinon.spy(),
       };
 
       class fakeUsuario {
@@ -164,17 +163,17 @@ describe('Controller: Usuarios', () => {
           _id: fakeId,
           name: 'Updated usuario',
           description: 'Updated description',
-          price: 150
+          price: 150,
         };
         const request = {
           params: {
-            id: fakeId
+            id: fakeId,
           },
-          body: updatedUsuario
+          body: updatedUsuario,
         };
         const response = {
           send: sinon.spy(),
-          status: sinon.stub()
+          status: sinon.stub(),
         };
 
         class fakeUsuario {
@@ -200,11 +199,11 @@ describe('Controller: Usuarios', () => {
       const fakeId = 'a-fake-id';
       const request = {
         params: {
-          id: fakeId
-        }
+          id: fakeId,
+        },
       };
       const response = {
-        sendStatus: sinon.spy()
+        sendStatus: sinon.spy(),
       };
 
       class fakeUsuario {
@@ -228,12 +227,12 @@ describe('Controller: Usuarios', () => {
         const fakeId = 'a-fake-id';
         const request = {
           params: {
-            id: fakeId
-          }
+            id: fakeId,
+          },
         };
         const response = {
           send: sinon.spy(),
-          status: sinon.stub()
+          status: sinon.stub(),
         };
 
         class fakeUsuario {
@@ -242,7 +241,7 @@ describe('Controller: Usuarios', () => {
 
         const removeStub = sinon.stub(fakeUsuario, 'remove');
 
-        removeStub.withArgs({ _id: fakeId }).rejects({message: 'Error'});
+        removeStub.withArgs({ _id: fakeId }).rejects({ message: 'Error' });
         response.status.withArgs(400).returns(response);
 
         const usuariosController = new UsuariosController(fakeUsuario);
@@ -255,4 +254,3 @@ describe('Controller: Usuarios', () => {
     });
   });
 });
-

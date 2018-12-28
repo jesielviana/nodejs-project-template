@@ -1,6 +1,6 @@
 import express from 'express';
-import UsuariosController from '../controllers/usuarios';
-import Usuario from '../models/usuario';
+import UsuariosController from '../controllers/users-controller';
+import Usuario from '../models/users';
 
 const router = express.Router();
 const usuariosController = new UsuariosController(Usuario);

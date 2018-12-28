@@ -32,7 +32,7 @@ class UsuariosController {
   }
 
   remove(req, res) {
-    return this.Usuario.remove({ _id: req.params.id })
+    return this.Usuario.deleteOne({ _id: req.params.id })
       .then(() => res.sendStatus(204))
       .catch(err => res.status(400).send(err.message));
   }
