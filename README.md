@@ -1,4 +1,5 @@
-# nodejs-project-template
-Template for Nodejs Projetcs
+# Template for Nodejs Projetcs
 
-By Jesiel Viana
+## Use Javascript best pratices, validated for eslint based in Airbnb JavaScript Style Guide
+
+By @jesielviana
