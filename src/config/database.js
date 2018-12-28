@@ -17,5 +17,5 @@ const connect = () => mongoose.connect(mongodbUrl, configuracoes);
 
 
 export default {
-  connect
-}
+  connect,
+};

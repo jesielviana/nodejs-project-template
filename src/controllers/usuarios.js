@@ -12,7 +12,7 @@ class UsuariosController {
   getById(req, res) {
     const { params: { id } } = req;
 
-    return this.Usuario.find({ _id:id })
+    return this.Usuario.find({ _id: id })
       .then(Usuarios => res.send(Usuarios))
       .catch(err => res.status(400).send(err.message));
   }
@@ -26,17 +26,16 @@ class UsuariosController {
   }
 
   update(req, res) {
-    return this.Usuario.findOneAndUpdate({ _id: req.params.id}, req.body)
+    return this.Usuario.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(() => res.sendStatus(200))
       .catch(err => res.status(422).send(err.message));
   }
 
   remove(req, res) {
-    return this.Usuario.remove({ _id: req.params.id})
+    return this.Usuario.remove({ _id: req.params.id })
       .then(() => res.sendStatus(204))
       .catch(err => res.status(400).send(err.message));
   }
-
 }
 
 export default UsuariosController;

@@ -6,7 +6,7 @@ import database from './config/database';
 const app = express();
 
 const configureExpress = () => {
-    app.use(bodyParser.json());
+  app.use(bodyParser.json());
   app.use('/', routes);
   return app;
 };
