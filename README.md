@@ -1,5 +1,6 @@
 # Template for Nodejs Projetcs
 
-## Use Javascript best pratices, validated for eslint based in Airbnb JavaScript Style Guide
+Implements Javascript best practices validated by eslint based on the Airbnb JavaScript Style Guide
 
-By @jesielviana
+> By @jesielviana
+
