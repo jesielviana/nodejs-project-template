@@ -1,41 +1,50 @@
-class UsuariosController {
-  constructor(Usuario) {
-    this.Usuario = Usuario;
+class UsersController {
+  constructor(User) {
+    this.User = User;
   };
 
-  get(req, res) {
-    return this.Usuario.find({})
-      .then(Usuarios => res.send(Usuarios))
-      .catch(err => res.status(400).send(err.message));
+  async get(req, res) {
+    try {
+      const users = await this.User.find({}, '_id name email');
+      res.send(users);
+    } catch (err) {
+      console.error(err);;
+      res.status(400).send('Erro');
+    }
   }
 
-  getById(req, res) {
+  async getById(req, res) {
     const { params: { id } } = req;
-
-    return this.Usuario.find({ _id: id })
-      .then(Usuarios => res.send(Usuarios))
-      .catch(err => res.status(400).send(err.message));
-  }
-
-  create(req, res) {
-    const Usuario = new this.Usuario(req.body);
-
-    return Usuario.save()
-      .then(() => res.status(201).send(Usuario))
-      .catch(err => res.status(422).send(err.message));
-  }
-
-  update(req, res) {
-    return this.Usuario.findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(() => res.sendStatus(200))
-      .catch(err => res.status(422).send(err.message));
-  }
-
-  remove(req, res) {
-    return this.Usuario.deleteOne({ _id: req.params.id })
-      .then(() => res.sendStatus(204))
-      .catch(err => res.status(400).send(err.message));
+    try {
+      const user = await this.User.findById(id, '_id name email');
+    res.send(user);
+  } catch(err) {
+    console.error(err);;
+    res.status(400).send('Erro');
   }
 }
 
-export default UsuariosController;
+create(req, res) {
+  const user = new this.User(req.body);
+  return user.save()
+    .then(() => res.status(201).send('Success'))
+    .catch((err) => {
+      console.error(err);
+      res.status(422).send(err.message);
+    });
+}
+
+update(req, res) {
+  return this.User.findOneAndUpdate({ _id: req.params.id }, req.body)
+    .then(() => res.sendStatus(200))
+    .catch(err => res.status(422).send(err.message));
+}
+
+remove(req, res) {
+  return this.User.deleteOne({ _id: req.params.id })
+    .then(() => res.sendStatus(204))
+    .catch(err => res.status(400).send(err.message));
+}
+}
+
+export default UsersController;

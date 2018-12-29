@@ -1,12 +1,12 @@
-import UsuariosController from '../../../src/controllers/usuarios';
+import UsersController from '../../../src/controllers/users-controller';
 import sinon from 'sinon';
-import Usuario from '../../../src/models/usuario';
+import User from '../../../src/models/user';
 
-describe('Controller: Usuarios', () => {
-  const defaultUsuario = [{
+describe('Controller: Users', () => {
+  const defaultUser = [{
     __v: 0,
     _id: '56cb91bdc3464f14678934ca',
-    nome: 'Default usuario',
+    nome: 'Default User',
     cpf: '12345678901',
     dataNascimento: new Date('01.02.2012'),
   }];
@@ -15,20 +15,20 @@ describe('Controller: Usuarios', () => {
     params: {},
   };
 
-  describe('get() usuarios', () => {
-    it('should call send with a list of usuarios', () => {
+  describe('get() Users', () => {
+    it('should call send with a list of Users', () => {
       const response = {
         send: sinon.spy(),
       };
-      Usuario.find = sinon.stub();
+      User.find = sinon.stub();
 
-      Usuario.find.withArgs({}).resolves(defaultUsuario);
+      User.find.withArgs({}).resolves(defaultUser);
 
-      const usuariosController = new UsuariosController(Usuario);
+      const usersController = new UsersController(User);
 
-      return usuariosController.get(defaultRequest, response)
+      return usersController.get(defaultRequest, response)
         .then(() => {
-          sinon.assert.calledWith(response.send, defaultUsuario);
+          sinon.assert.calledWith(response.send, defaultUser);
         });
     });
 
@@ -40,12 +40,12 @@ describe('Controller: Usuarios', () => {
       };
 
       response.status.withArgs(400).returns(response);
-      Usuario.find = sinon.stub();
-      Usuario.find.withArgs({}).rejects({ message: 'Error' });
+      User.find = sinon.stub();
+      User.find.withArgs({}).rejects({ message: 'Error' });
 
-      const usuariosController = new UsuariosController(Usuario);
+      const usersController = new UsersController(User);
 
-      return usuariosController.get(request, response)
+      return usersController.get(request, response)
         .then(() => {
           sinon.assert.calledWith(response.send, 'Error');
         });
@@ -53,7 +53,7 @@ describe('Controller: Usuarios', () => {
   });
 
   describe('getById()', () => {
-    it('should call send with one usuario', () => {
+    it('should call send with one User', () => {
       const fakeId = 'a-fake-id';
       const request = {
         params: {
@@ -64,35 +64,35 @@ describe('Controller: Usuarios', () => {
         send: sinon.spy(),
       };
 
-      Usuario.find = sinon.stub();
-      Usuario.find.withArgs({ _id: fakeId }).resolves(defaultUsuario);
+      User.find = sinon.stub();
+      User.find.withArgs({ _id: fakeId }).resolves(defaultUser);
 
-      const usuariosController = new UsuariosController(Usuario);
+      const usersController = new UsersController(User);
 
-      return usuariosController.getById(request, response)
+      return usersController.getById(request, response)
         .then(() => {
-          sinon.assert.calledWith(response.send, defaultUsuario);
+          sinon.assert.calledWith(response.send, defaultUser);
         });
     });
   });
 
-  describe('create() usuario', () => {
-    it('should call send with a new usuario', () => {
-      const requestWithBody = Object.assign({}, { body: defaultUsuario[0] }, defaultRequest);
+  describe('create() User', () => {
+    it('should call send with a new User', () => {
+      const requestWithBody = Object.assign({}, { body: defaultUser[0] }, defaultRequest);
       const response = {
         send: sinon.spy(),
         status: sinon.stub(),
       };
-      class fakeUsuario {
+      class fakeUser {
         save() {}
       }
 
       response.status.withArgs(201).returns(response);
-      sinon.stub(fakeUsuario.prototype, 'save').withArgs().resolves();
+      sinon.stub(fakeUser.prototype, 'save').withArgs().resolves();
 
-      const usuariosController = new UsuariosController(fakeUsuario);
+      const usersController = new UsersController(fakeUser);
 
-      return usuariosController.create(requestWithBody, response)
+      return usersController.create(requestWithBody, response)
         .then(() => {
           sinon.assert.calledWith(response.send);
         });
@@ -105,16 +105,16 @@ describe('Controller: Usuarios', () => {
           status: sinon.stub(),
         };
 
-        class fakeUsuario {
+        class fakeUser {
           save() {}
         }
 
         response.status.withArgs(422).returns(response);
-        sinon.stub(fakeUsuario.prototype, 'save').withArgs().rejects({ message: 'Error' });
+        sinon.stub(fakeUser.prototype, 'save').withArgs().rejects({ message: 'Error' });
 
-        const usuariosController = new UsuariosController(fakeUsuario);
+        const usersController = new UsersController(fakeUser);
 
-        return usuariosController.create(defaultRequest, response)
+        return usersController.create(defaultRequest, response)
           .then(() => {
             sinon.assert.calledWith(response.status, 422);
           });
@@ -122,35 +122,35 @@ describe('Controller: Usuarios', () => {
     });
   });
 
-  describe('update() usuario', () => {
-    it('should respond with 200 when the usuario has been updated', () => {
+  describe('update() User', () => {
+    it('should respond with 200 when the User has been updated', () => {
       const fakeId = 'a-fake-id';
-      const updatedUsuario = {
+      const updatedUser = {
         _id: fakeId,
-        nome: 'Default usuario',
-        cpf: 'usuario description',
+        nome: 'Default User',
+        cpf: 'User description',
         dataNascimento: new Date('01.02.2012'),
       };
       const request = {
         params: {
           id: fakeId,
         },
-        body: updatedUsuario,
+        body: updatedUser,
       };
       const response = {
         sendStatus: sinon.spy(),
       };
 
-      class fakeUsuario {
+      class fakeUser {
         static findOneAndUpdate() {}
       }
 
-      const findOneAndUpdateStub = sinon.stub(fakeUsuario, 'findOneAndUpdate');
-      findOneAndUpdateStub.withArgs({ _id: fakeId }, updatedUsuario).resolves(updatedUsuario);
+      const findOneAndUpdateStub = sinon.stub(fakeUser, 'findOneAndUpdate');
+      findOneAndUpdateStub.withArgs({ _id: fakeId }, updatedUser).resolves(updatedUser);
 
-      const usuariosController = new UsuariosController(fakeUsuario);
+      const usersController = new UsersController(fakeUser);
 
-      return usuariosController.update(request, response)
+      return usersController.update(request, response)
         .then(() => {
           sinon.assert.calledWith(response.sendStatus, 200);
         });
@@ -159,9 +159,9 @@ describe('Controller: Usuarios', () => {
     context('when an error occurs', () => {
       it('should return 422', () => {
         const fakeId = 'a-fake-id';
-        const updatedUsuario = {
+        const updatedUser = {
           _id: fakeId,
-          name: 'Updated usuario',
+          name: 'Updated User',
           description: 'Updated description',
           price: 150,
         };
@@ -169,24 +169,24 @@ describe('Controller: Usuarios', () => {
           params: {
             id: fakeId,
           },
-          body: updatedUsuario,
+          body: updatedUser,
         };
         const response = {
           send: sinon.spy(),
           status: sinon.stub(),
         };
 
-        class fakeUsuario {
+        class fakeUser {
           static findOneAndUpdate() {}
         }
 
-        const findOneAndUpdateStub = sinon.stub(fakeUsuario, 'findOneAndUpdate');
-        findOneAndUpdateStub.withArgs({ _id: fakeId }, updatedUsuario).rejects({ message: 'Error' });
+        const findOneAndUpdateStub = sinon.stub(fakeUser, 'findOneAndUpdate');
+        findOneAndUpdateStub.withArgs({ _id: fakeId }, updatedUser).rejects({ message: 'Error' });
         response.status.withArgs(422).returns(response);
 
-        const usuariosController = new UsuariosController(fakeUsuario);
+        const usersController = new UsersController(fakeUser);
 
-        return usuariosController.update(request, response)
+        return usersController.update(request, response)
           .then(() => {
             sinon.assert.calledWith(response.send, 'Error');
           });
@@ -194,8 +194,8 @@ describe('Controller: Usuarios', () => {
     });
   });
 
-  describe('delete() usuario', () => {
-    it('should respond with 204 when the usuario has been deleted', () => {
+  describe('delete() User', () => {
+    it('should respond with 204 when the User has been deleted', () => {
       const fakeId = 'a-fake-id';
       const request = {
         params: {
@@ -206,17 +206,17 @@ describe('Controller: Usuarios', () => {
         sendStatus: sinon.spy(),
       };
 
-      class fakeUsuario {
+      class fakeUser {
         static remove() {}
       }
 
-      const removeStub = sinon.stub(fakeUsuario, 'remove');
+      const removeStub = sinon.stub(fakeUser, 'remove');
 
       removeStub.withArgs({ _id: fakeId }).resolves([1]);
 
-      const usuariosController = new UsuariosController(fakeUsuario);
+      const usersController = new UsersController(fakeUser);
 
-      return usuariosController.remove(request, response)
+      return usersController.remove(request, response)
         .then(() => {
           sinon.assert.calledWith(response.sendStatus, 204);
         });
@@ -235,18 +235,18 @@ describe('Controller: Usuarios', () => {
           status: sinon.stub(),
         };
 
-        class fakeUsuario {
+        class fakeUser {
           static remove() {}
         }
 
-        const removeStub = sinon.stub(fakeUsuario, 'remove');
+        const removeStub = sinon.stub(fakeUser, 'remove');
 
         removeStub.withArgs({ _id: fakeId }).rejects({ message: 'Error' });
         response.status.withArgs(400).returns(response);
 
-        const usuariosController = new UsuariosController(fakeUsuario);
+        const usersController = new UsersController(fakeUser);
 
-        return usuariosController.remove(request, response)
+        return usersController.remove(request, response)
           .then(() => {
             sinon.assert.calledWith(response.send, 'Error');
           });

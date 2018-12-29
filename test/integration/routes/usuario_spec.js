@@ -1,8 +1,8 @@
 /* global setupApp supertest expect */
 
-import Usuario from '../../../src/models/usuario';
+import User from '../../../src/models/user';
 
-describe('Routes: Usuarios', () => {
+describe('Routes: users', () => {
   let request;
 
   before(() => setupApp()
@@ -11,88 +11,81 @@ describe('Routes: Usuarios', () => {
     }));
 
   const defaultId = '56cb91bdc3464f14678934ca';
-  const defaulAlteracao = new Date().toISOString();
 
-  const defaultUsuario = {
-    nome: 'Default usuario',
-    alteracao: defaulAlteracao,
+  const defaultUser = {
+    name: 'Default User',
+    email: 'email@email.com',
+    password: '12345678',
   };
-  const expectedUsuario = {
-    __v: 0,
+  const expectedUser = {
     _id: defaultId,
-    nome: 'Default usuario',
-    alteracao: defaulAlteracao,
+    name: 'Default User',
+    email: 'email@email.com',
   };
 
   beforeEach(() => {
-    const usuario = new Usuario(defaultUsuario);
-    usuario._id = '56cb91bdc3464f14678934ca';
-    return Usuario.deleteMany({})
-      .then(() => usuario.save());
+    const user = new User(defaultUser);
+    user._id = defaultId;
+    return User.deleteMany({})
+      .then(() => user.save());
   });
 
-  afterEach(() => Usuario.deleteMany({}));
+  afterEach(() => User.deleteMany({}));
 
   after(() => process.exit());
 
-  describe('GET /usuarios', () => {
-    it('should return a list of usuarios', (done) => {
+  describe('GET /users', () => {
+    it('should return a list of users', (done) => {
       request
-        .get('/usuarios')
+        .get('/users')
         .end((err, res) => {
-          expect(res.body).to.eql([expectedUsuario]);
+          expect(res.body).to.eql([expectedUser]);
           done(err);
         });
     });
 
     context('when an id is specified', () => {
-      it('should return 200 with one usuario', (done) => {
+      it('should return 200 with one User', (done) => {
         request
-          .get(`/usuarios/${defaultId}`)
+          .get(`/users/${defaultId}`)
           .end((err, res) => {
             expect(res.statusCode).to.eql(200);
-            expect(res.body).to.eql([expectedUsuario]);
+            expect(res.body).to.eql(expectedUser);
             done(err);
           });
       });
     });
   });
 
-  describe('POST /usuarios', () => {
-    context('when posting a usuario', () => {
-      it('should return a new usuario with status code 201', (done) => {
+  describe('POST /users', () => {
+    context('when posting a User', () => {
+      it('should return a `success` with status code 201', (done) => {
         const customId = '56cb91bdc3464f14678934ba';
-        const newUsuario = Object.assign({}, { _id: customId, __v: 0 }, defaultUsuario);
-        const expectedSavedUsuario = {
-          __v: 0,
-          _id: customId,
-          nome: 'Default usuario',
-          alteracao: defaulAlteracao,
-        };
+        const newUser = Object.assign({}, { _id: customId, __v: 0 }, defaultUser);
 
         request
-          .post('/usuarios')
-          .send(newUsuario)
+          .post('/users')
+          .send(newUser)
           .end((err, res) => {
             expect(res.statusCode).to.eql(201);
-            expect(res.body).to.eql(expectedSavedUsuario);
+            expect(res.text).to.eql('Success');
             done(err);
           });
       });
     });
   });
 
-  describe('PUT /usuarios/:id', () => {
-    context('when editing a usuario', () => {
-      it('should update the usuario and return 200 as status code', (done) => {
-        const customUsuario = {
+  describe('PUT /users/:id', () => {
+    context('when editing a User', () => {
+      it('should update the User and return 200 as status code', (done) => {
+        const customUser = {
           name: 'Custom name',
         };
-        const updatedUsuario = Object.assign({}, customUsuario, defaultUsuario);
+        const updatedUser = Object.assign({}, customUser, defaultUser);
 
         request
-          .put(`/usuarios/${defaultId}`)
-          .send(updatedUsuario)
+          .put(`/users/${defaultId}`)
+          .send(updatedUser)
           .end((err, res) => {
             expect(res.status).to.eql(200);
             done(err);
@@ -101,11 +94,11 @@ describe('Routes: Usuarios', () => {
     });
   });
 
-  describe('DELETE /usuarios/:id', () => {
-    context('when deleting a usuario', () => {
-      it('should delete a usuario and return 204 as status code', (done) => {
+  describe('DELETE /users/:id', () => {
+    context('when deleting a User', () => {
+      it('should delete a User and return 204 as status code', (done) => {
         request
-          .delete(`/usuarios/${defaultId}`)
+          .delete(`/users/${defaultId}`)
           .end((err, res) => {
             expect(res.status).to.eql(204);
             done(err);
