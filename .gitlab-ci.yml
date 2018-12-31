@@ -22,5 +22,5 @@ install_dependencies:
 test_with_lab:
   stage: test
   script: 
-    - npm run test:unit
+    - npm test
     

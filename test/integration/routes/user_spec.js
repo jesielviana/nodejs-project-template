@@ -8,6 +8,9 @@ describe('Routes: users', () => {
   before(() => setupApp()
     .then((app) => {
       request = supertest(app);
+    }).catch((err) => {
+      console.error(err);
+      throw new Error();
     }));
 
   const defaultId = '56cb91bdc3464f14678934ca';
@@ -32,7 +35,7 @@ describe('Routes: users', () => {
 
   afterEach(() => User.deleteMany({}));
 
-  after(() => process.exit());
+  // after(() => process.exit());
 
   describe('GET /users', () => {
     it('should return a list of users', (done) => {

@@ -6,10 +6,16 @@ describe('Controller: Users', () => {
   const defaultUser = [{
     __v: 0,
     _id: '56cb91bdc3464f14678934ca',
-    nome: 'Default User',
-    cpf: '12345678901',
-    dataNascimento: new Date('01.02.2012'),
+    name: 'Default User',
+    email: 'email@email.com',
+    password: '12345678',
   }];
+
+  const defaultUserExpected = {
+    _id: '56cb91bdc3464f14678934ca',
+    name: 'Default User',
+    email: 'email@email.com',
+  };
 
   const defaultRequest = {
     params: {},
@@ -64,14 +70,14 @@ describe('Controller: Users', () => {
         send: sinon.spy(),
       };
 
-      User.find = sinon.stub();
-      User.find.withArgs({ _id: fakeId }).resolves(defaultUser);
+      User.findById = sinon.stub();
+      User.findById.withArgs(fakeId, '_id name email').resolves(defaultUserExpected);
 
       const usersController = new UsersController(User);
 
       return usersController.getById(request, response)
         .then(() => {
-          sinon.assert.calledWith(response.send, defaultUser);
+          sinon.assert.calledWith(response.send, defaultUserExpected);
         });
     });
   });
@@ -128,8 +134,7 @@ describe('Controller: Users', () => {
       const updatedUser = {
         _id: fakeId,
         nome: 'Default User',
-        cpf: 'User description',
-        dataNascimento: new Date('01.02.2012'),
+        email: 'novo@email.com',
       };
       const request = {
         params: {
@@ -207,10 +212,10 @@ describe('Controller: Users', () => {
       };
 
       class fakeUser {
-        static remove() {}
+        static deleteOne() {}
       }
 
-      const removeStub = sinon.stub(fakeUser, 'remove');
+      const removeStub = sinon.stub(fakeUser, 'deleteOne');
 
       removeStub.withArgs({ _id: fakeId }).resolves([1]);
 
@@ -236,10 +241,10 @@ describe('Controller: Users', () => {
         };
 
         class fakeUser {
-          static remove() {}
+          static deleteOne() {}
         }
 
-        const removeStub = sinon.stub(fakeUser, 'remove');
+        const removeStub = sinon.stub(fakeUser, 'deleteOne');
 
         removeStub.withArgs({ _id: fakeId }).rejects({ message: 'Error' });
         response.status.withArgs(400).returns(response);

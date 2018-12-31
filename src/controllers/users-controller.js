@@ -8,8 +8,8 @@ class UsersController {
       const users = await this.User.find({}, '_id name email');
       res.send(users);
     } catch (err) {
-      console.error(err);;
-      res.status(400).send('Erro');
+      console.error(err);
+      res.status(400).send('Error');
     }
   }
 
@@ -19,8 +19,8 @@ class UsersController {
       const user = await this.User.findById(id, '_id name email');
     res.send(user);
   } catch(err) {
-    console.error(err);;
-    res.status(400).send('Erro');
+    console.error(err);
+    res.status(400).send('Error');
   }
 }
 
