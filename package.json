@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "eslint server.js src test",
+    "lint:fix": "eslint server.js src test --fix",
     "debug": "babel-node --nolazy --inspect-brk=9229 ./server.js",
     "start": "babel-node ./server.js",
     "test:integration": "NODE_ENV=test mocha  --exit --require @babel/register --require @babel/polyfill --require test/integration/helpers.js test/integration/**/*_spec.js",
@@ -13,7 +13,7 @@
     "test": "npm run test:unit && npm run test:integration",
     "clean": "rm -rf dist",
     "compile": "npm run clean && babel . -d dist  --ignore ./node_modules --ignore ./test",
-    "build": "npm run test && npm run clean && npm run compile"
+    "build": "npm run test && npm run compile"
   },
   "author": "",
   "license": "ISC",
@@ -23,7 +23,9 @@
     "@babel/node": "^7.2.2",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.2.0",
+    "babel-eslint": "^10.0.1",
     "chai": "^4.2.0",
+    "eslint": "^5.12.0",
     "mocha": "^5.2.0",
     "sinon": "^7.2.2",
     "supertest": "^3.3.0"

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* global setupApp supertest expect */
 
 import User from '../../../src/models/user';

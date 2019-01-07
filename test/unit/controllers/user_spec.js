@@ -1,4 +1,5 @@
-import UsersController from '../../../src/controllers/users-controller';
+/* eslint-disable class-methods-use-this */
+import UsersController from '../../../src/controllers/users';
 import sinon from 'sinon';
 import User from '../../../src/models/user';
 
@@ -112,7 +113,7 @@ describe('Controller: Users', () => {
         };
 
         class fakeUser {
-          save() {}
+          save() { }
         }
 
         response.status.withArgs(422).returns(response);

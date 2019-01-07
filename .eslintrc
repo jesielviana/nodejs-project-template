@@ -1106,6 +1106,7 @@
     "strict": ["error", "never"]
 
   },
+  "parser": "babel-eslint",
    "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
