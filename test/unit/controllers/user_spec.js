@@ -35,7 +35,7 @@ describe('Controller: Users', () => {
         });
     });
 
-    it.only('should return 400 when an error occurs', () => {
+    it('should return 400 when an error occurs', () => {
       User.find = sinon.stub();
       User.find.withArgs({}).rejects('Error400');
 
@@ -50,25 +50,17 @@ describe('Controller: Users', () => {
   });
 
   describe('getById()', () => {
-    it('should call send with one User', () => {
+    it.only('should call send with one User', () => {
       const fakeId = 'a-fake-id';
-      const request = {
-        params: {
-          id: fakeId,
-        },
-      };
-      const response = {
-        send: sinon.spy(),
-      };
 
       User.findById = sinon.stub();
       User.findById.withArgs(fakeId, '_id name email').resolves(defaultUserExpected);
 
       const usersController = new UsersController(User);
 
-      return usersController.getById(request, response)
-        .then(() => {
-          sinon.assert.calledWith(response.send, defaultUserExpected);
+      return usersController.getById(fakeId)
+        .then((result) => {
+          expect(result).to.eql(defaultUserExpected);
         });
     });
   });
