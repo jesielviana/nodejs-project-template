@@ -3,47 +3,45 @@ class UsersController {
     this.User = User;
   }
 
-  async get(req, res) {
+  async get() {
     try {
-      const users = await this.User.find({}, '_id name email');
-      res.send(users);
+      return await this.User.find({}, '_id name email');
     } catch (err) {
-      console.error(err);
-      res.status(400).send('Error');
+      throw new Error(err);
     }
   }
 
-  async getById(req, res) {
-    const { params: { id } } = req;
+  async getById(id) {
     try {
-      const user = await this.User.findById(id, '_id name email');
-      res.send(user);
+      return await this.User.findById(id, '_id name email');
     } catch (err) {
-      console.error(err);
-      res.status(400).send('Error');
+      throw new Error(err);
     }
   }
 
-  create(req, res) {
-    const user = new this.User(req.body);
-    return user.save()
-      .then(() => res.status(201).send('Success'))
-      .catch((err) => {
-        console.error(err);
-        res.status(422).send(err.message);
-      });
+  async create(userDTO) {
+    try {
+      const user = new this.User(userDTO);
+      await user.save();
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
-  update(req, res) {
-    return this.User.findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(() => res.sendStatus(200))
-      .catch((err) => res.status(422).send(err.message));
+  async update(id, userDTO) {
+    try {
+      await this.User.findOneAndUpdate({ _id: id }, userDTO);
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
-  remove(req, res) {
-    return this.User.deleteOne({ _id: req.params.id })
-      .then(() => res.sendStatus(204))
-      .catch((err) => res.status(400).send(err.message));
+  async remove(id) {
+    try {
+      await this.User.deleteOne({ _id: id });
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 }
 

@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 /* global setupApp supertest expect */
-
 import User from '../../../src/models/user';
+import Config from '../../../src/config/config';
+import message from '../../../src/utils/message.json';
 
 describe('Routes: users', () => {
   let request;
@@ -38,10 +39,10 @@ describe('Routes: users', () => {
 
   // after(() => process.exit());
 
-  describe('GET /users', () => {
+  describe('GET /api/users', () => {
     it('should return a list of users', (done) => {
       request
-        .get('/users')
+        .get(`${Config.API_BASE}/users`)
         .end((err, res) => {
           expect(res.body).to.eql([expectedUser]);
           done(err);
@@ -51,7 +52,7 @@ describe('Routes: users', () => {
     context('when an id is specified', () => {
       it('should return 200 with one User', (done) => {
         request
-          .get(`/users/${defaultId}`)
+          .get(`${Config.API_BASE}/users/${defaultId}`)
           .end((err, res) => {
             expect(res.statusCode).to.eql(200);
             expect(res.body).to.eql(expectedUser);
@@ -68,11 +69,11 @@ describe('Routes: users', () => {
         const newUser = { _id: customId, __v: 0, ...defaultUser };
 
         request
-          .post('/users')
+          .post(`${Config.API_BASE}/users`)
           .send(newUser)
           .end((err, res) => {
             expect(res.statusCode).to.eql(201);
-            expect(res.text).to.eql('Success');
+            expect(res.text).to.eql(message.success.createUser);
             done(err);
           });
       });
@@ -88,7 +89,7 @@ describe('Routes: users', () => {
         const updatedUser = { ...customUser, ...defaultUser };
 
         request
-          .put(`/users/${defaultId}`)
+          .put(`${Config.API_BASE}/users/${defaultId}`)
           .send(updatedUser)
           .end((err, res) => {
             expect(res.status).to.eql(200);
@@ -102,9 +103,9 @@ describe('Routes: users', () => {
     context('when deleting a User', () => {
       it('should delete a User and return 204 as status code', (done) => {
         request
-          .delete(`/users/${defaultId}`)
+          .delete(`${Config.API_BASE}/users/${defaultId}`)
           .end((err, res) => {
-            expect(res.status).to.eql(204);
+            expect(res.status).to.eql(200);
             done(err);
           });
       });

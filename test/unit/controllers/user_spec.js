@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable max-classes-per-file */
 /* eslint-disable class-methods-use-this */
 import sinon from 'sinon';
@@ -19,43 +20,31 @@ describe('Controller: Users', () => {
     email: 'email@email.com',
   };
 
-  const defaultRequest = {
-    params: {},
-  };
 
   describe('get() Users', () => {
     it('should call send with a list of Users', () => {
-      const response = {
-        send: sinon.spy(),
-      };
       User.find = sinon.stub();
 
       User.find.withArgs({}).resolves(defaultUser);
 
       const usersController = new UsersController(User);
 
-      return usersController.get(defaultRequest, response)
-        .then(() => {
-          sinon.assert.calledWith(response.send, defaultUser);
+      return usersController.get()
+        .then((result) => {
+          expect(result).to.eql(defaultUser);
         });
     });
 
-    it('should return 400 when an error occurs', () => {
-      const request = {};
-      const response = {
-        send: sinon.spy(),
-        status: sinon.stub(),
-      };
-
-      response.status.withArgs(400).returns(response);
+    it.only('should return 400 when an error occurs', () => {
       User.find = sinon.stub();
-      User.find.withArgs({}).rejects({ message: 'Error' });
+      User.find.withArgs({}).rejects('Error400');
 
       const usersController = new UsersController(User);
 
-      return usersController.get(request, response)
+      return usersController.get()
         .then(() => {
-          sinon.assert.calledWith(response.send, 'Error');
+        }).catch((err) => {
+          expect(err.message).to.eql('Error400');
         });
     });
   });

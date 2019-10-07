@@ -1,0 +1,12 @@
+{
+  "error": {
+    "default": "Erro inesperado, tente novamente mais tarde."
+  },
+
+  "success": {
+    "createUser": "Usuário cadastrado com sucesso!",
+    "editUser": "Usuário alterado com sucesso!",
+    "removeUser": "Usuário removido com sucesso!",
+    "photosSend": "Imagem enviada com sucesso, aguarde a validação"
+  }
+}

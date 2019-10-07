@@ -10,7 +10,7 @@
     "start": "babel-node ./server.js",
     "dev": "babel-node ./server.js",
     "test:integration": "NODE_ENV=test mocha  --exit --require @babel/register --require @babel/polyfill --require test/integration/helpers.js test/integration/**/*_spec.js",
-    "test:unit": "NODE_ENV=test mocha --require @babel/register --require @babel/polyfill test/unit/**/*_spec.js",
+    "test:unit": "NODE_ENV=test mocha --require @babel/register --require @babel/polyfill --require test/unit/helpers.js test/unit/**/*_spec.js",
     "test": "npm run test:unit && npm run test:integration",
     "clean": "rm -rf dist",
     "compile": "npm run clean && babel . -d dist  --ignore ./node_modules --ignore ./test",
@@ -38,7 +38,11 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "helmet": "^3.21.1",
     "mongoose": "^5.4.0",
-    "mongoose-unique-validator": "^2.0.2"
+    "mongoose-unique-validator": "^2.0.2",
+    "morgan": "^1.9.1",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.2.1"
   }
 }
