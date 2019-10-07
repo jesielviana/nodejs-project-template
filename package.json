@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint server.js src test",
     "debug": "babel-node --nolazy --inspect-brk=9229 ./server.js",
-    "dev": "babel-node ./server.js",
+    "dev": "babel src -d dist",
     "test:integration": "NODE_ENV=test mocha  --exit --require @babel/register --require @babel/polyfill --require test/integration/helpers.js test/integration/**/*_spec.js",
     "test:unit": "NODE_ENV=test mocha --require @babel/register --require @babel/polyfill --require test/unit/helpers.js test/unit/**/*_spec.js",
     "test": "npm run test:unit && npm run test:integration",
