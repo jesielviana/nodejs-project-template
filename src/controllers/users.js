@@ -37,13 +37,13 @@ class UsersController {
   update(req, res) {
     return this.User.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(() => res.sendStatus(200))
-      .catch(err => res.status(422).send(err.message));
+      .catch((err) => res.status(422).send(err.message));
   }
 
   remove(req, res) {
     return this.User.deleteOne({ _id: req.params.id })
       .then(() => res.sendStatus(204))
-      .catch(err => res.status(400).send(err.message));
+      .catch((err) => res.status(400).send(err.message));
   }
 }
 

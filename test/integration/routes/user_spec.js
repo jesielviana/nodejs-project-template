@@ -65,7 +65,7 @@ describe('Routes: users', () => {
     context('when posting a User', () => {
       it('should return a `success` with status code 201', (done) => {
         const customId = '56cb91bdc3464f14678934ba';
-        const newUser = Object.assign({}, { _id: customId, __v: 0 }, defaultUser);
+        const newUser = { _id: customId, __v: 0, ...defaultUser };
 
         request
           .post('/users')
@@ -85,7 +85,7 @@ describe('Routes: users', () => {
         const customUser = {
           name: 'Custom name',
         };
-        const updatedUser = Object.assign({}, customUser, defaultUser);
+        const updatedUser = { ...customUser, ...defaultUser };
 
         request
           .put(`/users/${defaultId}`)

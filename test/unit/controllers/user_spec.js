@@ -1,6 +1,7 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable class-methods-use-this */
-import UsersController from '../../../src/controllers/users';
 import sinon from 'sinon';
+import UsersController from '../../../src/controllers/users';
 import User from '../../../src/models/user';
 
 describe('Controller: Users', () => {
@@ -85,7 +86,7 @@ describe('Controller: Users', () => {
 
   describe('create() User', () => {
     it('should call send with a new User', () => {
-      const requestWithBody = Object.assign({}, { body: defaultUser[0] }, defaultRequest);
+      const requestWithBody = { body: defaultUser[0], ...defaultRequest };
       const response = {
         send: sinon.spy(),
         status: sinon.stub(),

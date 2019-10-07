@@ -1,6 +1,7 @@
 /* eslint-disable func-names */
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+
 const SALT_WORK_FACTOR = 10;
 
 const schema = new mongoose.Schema({
