@@ -1,7 +1,6 @@
 import express from 'express';
 import UsersController from '../controllers/users';
 import User from '../models/user';
-import message from '../utils/message.json';
 
 const router = express.Router();
 
@@ -31,7 +30,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     await usersController.create(req.body);
-    res.status(201).send(message.success.createUser);
+    res.status(201).send('Sucesso!');
   } catch (err) {
     res.status(400).send(err);
   }
@@ -40,7 +39,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     await usersController.update(req.params.id, req.body);
-    res.send(message.success.editUser);
+    res.send('Sucesso!');
   } catch (err) {
     res.status(400).send(err);
   }
@@ -49,7 +48,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     await usersController.remove(req.params.id);
-    res.send(message.success.removeUser);
+    res.send('Sucesso!');
   } catch (err) {
     res.status(400).send(err);
   }

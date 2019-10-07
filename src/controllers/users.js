@@ -5,7 +5,7 @@ class UsersController {
 
   async get() {
     try {
-      return await this.User.find({}, '_id name email');
+      return `Get ${this.User}`;
     } catch (err) {
       throw new Error(err);
     }
@@ -13,7 +13,7 @@ class UsersController {
 
   async getById(id) {
     try {
-      return await this.User.findById(id, '_id name email');
+      return `Get id ${this.User} ${id}`;
     } catch (err) {
       throw new Error(err);
     }
@@ -21,8 +21,7 @@ class UsersController {
 
   async create(userDTO) {
     try {
-      const user = new this.User(userDTO);
-      await user.save();
+      return `Post ${this.User} ${userDTO}`;
     } catch (err) {
       throw new Error(err);
     }
@@ -30,7 +29,7 @@ class UsersController {
 
   async update(id, userDTO) {
     try {
-      await this.User.findOneAndUpdate({ _id: id }, userDTO);
+      return `Put ${this.User} ${id} ${userDTO}`;
     } catch (err) {
       throw new Error(err);
     }
@@ -38,7 +37,7 @@ class UsersController {
 
   async remove(id) {
     try {
-      await this.User.deleteOne({ _id: id });
+      return `Delete ${this.User} ${id}`;
     } catch (err) {
       throw new Error(err);
     }
