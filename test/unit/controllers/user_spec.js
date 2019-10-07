@@ -6,20 +6,21 @@ import UsersController from '../../../src/controllers/users';
 import User from '../../../src/models/user';
 
 describe('Controller: Users', () => {
-  const defaultUser = [{
-    __v: 0,
-    _id: '56cb91bdc3464f14678934ca',
-    name: 'Default User',
-    email: 'email@email.com',
-    password: '12345678',
-  }];
+  const defaultUser = [
+    {
+      __v: 0,
+      _id: '56cb91bdc3464f14678934ca',
+      name: 'Default User',
+      email: 'email@email.com',
+      password: '12345678',
+    },
+  ];
 
   const defaultUserExpected = {
     _id: '56cb91bdc3464f14678934ca',
     name: 'Default User',
     email: 'email@email.com',
   };
-
 
   describe('get() Users', () => {
     it('should call send with a list of Users', () => {
@@ -29,10 +30,9 @@ describe('Controller: Users', () => {
 
       const usersController = new UsersController(User);
 
-      return usersController.get()
-        .then((result) => {
-          expect(result).to.eql(defaultUser);
-        });
+      return usersController.get().then((result) => {
+        expect(result).to.eql(defaultUser);
+      });
     });
 
     it('should return 400 when an error occurs', () => {
@@ -41,16 +41,17 @@ describe('Controller: Users', () => {
 
       const usersController = new UsersController(User);
 
-      return usersController.get()
-        .then(() => {
-        }).catch((err) => {
+      return usersController
+        .get()
+        .then(() => {})
+        .catch((err) => {
           expect(err.message).to.eql('Error400');
         });
     });
   });
 
   describe('getById()', () => {
-    it.only('should call send with one User', () => {
+    it('should call send with one User', () => {
       const fakeId = 'a-fake-id';
 
       User.findById = sinon.stub();
@@ -58,54 +59,48 @@ describe('Controller: Users', () => {
 
       const usersController = new UsersController(User);
 
-      return usersController.getById(fakeId)
-        .then((result) => {
-          expect(result).to.eql(defaultUserExpected);
-        });
+      return usersController.getById(fakeId).then((result) => {
+        expect(result).to.eql(defaultUserExpected);
+      });
     });
   });
 
   describe('create() User', () => {
     it('should call send with a new User', () => {
-      const requestWithBody = { body: defaultUser[0], ...defaultRequest };
-      const response = {
-        send: sinon.spy(),
-        status: sinon.stub(),
-      };
       class fakeUser {
         save() {}
       }
 
-      response.status.withArgs(201).returns(response);
-      sinon.stub(fakeUser.prototype, 'save').withArgs().resolves();
+      sinon
+        .stub(fakeUser.prototype, 'save')
+        .withArgs()
+        .resolves();
 
       const usersController = new UsersController(fakeUser);
 
-      return usersController.create(requestWithBody, response)
-        .then(() => {
-          sinon.assert.calledWith(response.send);
-        });
+      return usersController.create(defaultUser).then((result) => {
+        expect(result).to.eql(undefined);
+      });
     });
 
     context('when an error occurs', () => {
-      it('should return 422', () => {
-        const response = {
-          send: sinon.spy(),
-          status: sinon.stub(),
-        };
-
+      it('should return 400', () => {
         class fakeUser {
-          save() { }
+          save() {}
         }
 
-        response.status.withArgs(422).returns(response);
-        sinon.stub(fakeUser.prototype, 'save').withArgs().rejects({ message: 'Error' });
+        sinon
+          .stub(fakeUser.prototype, 'save')
+          .withArgs()
+          .rejects('Error400');
 
         const usersController = new UsersController(fakeUser);
 
-        return usersController.create(defaultRequest, response)
-          .then(() => {
-            sinon.assert.calledWith(response.status, 422);
+        return usersController
+          .create(defaultUser)
+          .then(() => {})
+          .catch((err) => {
+            expect(err.message).to.eql('Error400');
           });
       });
     });
@@ -119,15 +114,6 @@ describe('Controller: Users', () => {
         nome: 'Default User',
         email: 'novo@email.com',
       };
-      const request = {
-        params: {
-          id: fakeId,
-        },
-        body: updatedUser,
-      };
-      const response = {
-        sendStatus: sinon.spy(),
-      };
 
       class fakeUser {
         static findOneAndUpdate() {}
@@ -138,30 +124,18 @@ describe('Controller: Users', () => {
 
       const usersController = new UsersController(fakeUser);
 
-      return usersController.update(request, response)
-        .then(() => {
-          sinon.assert.calledWith(response.sendStatus, 200);
-        });
+      return usersController.update(fakeId, updatedUser).then((result) => {
+        expect(result).to.eql(undefined);
+      });
     });
 
     context('when an error occurs', () => {
-      it('should return 422', () => {
+      it('should return 400', () => {
         const fakeId = 'a-fake-id';
         const updatedUser = {
           _id: fakeId,
           name: 'Updated User',
-          description: 'Updated description',
-          price: 150,
-        };
-        const request = {
-          params: {
-            id: fakeId,
-          },
-          body: updatedUser,
-        };
-        const response = {
-          send: sinon.spy(),
-          status: sinon.stub(),
+          email: 'Updated email',
         };
 
         class fakeUser {
@@ -169,30 +143,23 @@ describe('Controller: Users', () => {
         }
 
         const findOneAndUpdateStub = sinon.stub(fakeUser, 'findOneAndUpdate');
-        findOneAndUpdateStub.withArgs({ _id: fakeId }, updatedUser).rejects({ message: 'Error' });
-        response.status.withArgs(422).returns(response);
+        findOneAndUpdateStub.withArgs({ _id: fakeId }, updatedUser).rejects('Error400');
 
         const usersController = new UsersController(fakeUser);
 
-        return usersController.update(request, response)
-          .then(() => {
-            sinon.assert.calledWith(response.send, 'Error');
+        return usersController
+          .update(fakeId, updatedUser)
+          .then(() => {})
+          .catch((err) => {
+            expect(err.message).to.eql('Error400');
           });
       });
     });
   });
 
   describe('delete() User', () => {
-    it('should respond with 204 when the User has been deleted', () => {
+    it('should respond with 200 when the User has been deleted', () => {
       const fakeId = 'a-fake-id';
-      const request = {
-        params: {
-          id: fakeId,
-        },
-      };
-      const response = {
-        sendStatus: sinon.spy(),
-      };
 
       class fakeUser {
         static deleteOne() {}
@@ -204,24 +171,17 @@ describe('Controller: Users', () => {
 
       const usersController = new UsersController(fakeUser);
 
-      return usersController.remove(request, response)
-        .then(() => {
-          sinon.assert.calledWith(response.sendStatus, 204);
+      return usersController
+        .remove(fakeId)
+        .then(() => {})
+        .catch((err) => {
+          expect(err.message).to.eql('Error400');
         });
     });
 
     context('when an error occurs', () => {
       it('should return 400', () => {
         const fakeId = 'a-fake-id';
-        const request = {
-          params: {
-            id: fakeId,
-          },
-        };
-        const response = {
-          send: sinon.spy(),
-          status: sinon.stub(),
-        };
 
         class fakeUser {
           static deleteOne() {}
@@ -229,14 +189,15 @@ describe('Controller: Users', () => {
 
         const removeStub = sinon.stub(fakeUser, 'deleteOne');
 
-        removeStub.withArgs({ _id: fakeId }).rejects({ message: 'Error' });
-        response.status.withArgs(400).returns(response);
+        removeStub.withArgs({ _id: fakeId }).rejects('Error400');
 
         const usersController = new UsersController(fakeUser);
 
-        return usersController.remove(request, response)
-          .then(() => {
-            sinon.assert.calledWith(response.send, 'Error');
+        return usersController
+          .remove(fakeId)
+          .then(() => {})
+          .catch((err) => {
+            expect(err.message).to.eql('Error400');
           });
       });
     });
