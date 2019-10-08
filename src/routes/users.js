@@ -9,6 +9,7 @@ const usersController = new UsersController(User);
 router.get('/', async (req, res) => {
   try {
     const users = await usersController.get();
+    console.log('users', users);
     res.send(users);
   } catch (err) {
     res.status(400).send(err);

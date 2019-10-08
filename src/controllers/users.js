@@ -1,11 +1,28 @@
+/* eslint-disable class-methods-use-this */
+import firebaseApp from '../config/firebase';
+
 class UsersController {
   constructor(User) {
     this.User = User;
+    this.firestore = firebaseApp.firestore();
   }
 
   async get() {
     try {
-      return `Get ${this.User}`;
+      const users = [];
+      await this.firestore
+        .collection('users')
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            console.info(doc.id, '=>', doc.data());
+            users.push(doc.data());
+          });
+        })
+        .catch((err) => {
+          console.error('Error getting documents', err);
+        });
+      return users;
     } catch (err) {
       throw new Error(err);
     }
@@ -21,8 +38,10 @@ class UsersController {
 
   async create(userDTO) {
     try {
-      return `Post ${this.User} ${userDTO}`;
+      const docRef = this.firestore.collection('users').doc(userDTO.first + userDTO.last);
+      docRef.set(userDTO);
     } catch (err) {
+      console.error(err);
       throw new Error(err);
     }
   }

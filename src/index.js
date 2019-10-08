@@ -1,6 +1,6 @@
 import '@babel/polyfill';
 // eslint-disable-next-line import/no-unresolved
-import * as functions from 'firebase-functions';
+// import * as functions from 'firebase-functions';
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -15,6 +15,6 @@ app.use(bodyParser.json());
 app.use(Config.API_BASE, routes);
 
 
-// app.listen(3000, () => console.log('online'));
+app.listen(3000, () => console.log('online'));
 
-export default functions.https.onRequest(app);
+// export default functions.https.onRequest(app);
