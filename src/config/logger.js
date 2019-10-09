@@ -1,6 +1,7 @@
-import { createLogger, format, transports } from 'winston';
-import DailyRotateFile from 'winston-daily-rotate-file';
-import fs from 'fs';
+const DailyRotateFile = require('winston-daily-rotate-file');
+const fs = require('fs');
+
+const winston = require('winston');
 
 const logDir = 'logs';
 
@@ -8,35 +9,35 @@ if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
 
-const logger = createLogger({
+const logger = winston.createLogger({
   transports: [
-    new (transports.Console)({
-      format: format.combine(
-        format.colorize(),
-        format.align(),
-        format.simple(),
+    new (winston.transports.Console)({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.align(),
+        winston.format.simple(),
       ),
       level: 'debug',
     }),
     new DailyRotateFile({
       filename: `${logDir}/log.log`,
-      format: format.combine(
-        format.timestamp(),
-        format.simple(),
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.simple(),
       ),
       datePattern: 'YYYY-MM-DD',
       maxSize: '20m',
       maxFiles: '30d',
       level: 'info',
     }),
-    new transports.File({
+    new winston.transports.File({
       filename: `${logDir}/error.log`,
       level: 'error',
-      format: format.combine(
-        format.simple(),
+      format: winston.format.combine(
+        winston.format.simple(),
       ),
     }),
   ],
 });
 
-export default logger;
+module.exports = logger;

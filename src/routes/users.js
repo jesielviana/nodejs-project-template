@@ -1,7 +1,7 @@
-import express from 'express';
-import UsersController from '../controllers/users';
-import User from '../models/user';
-import message from '../utils/message.json';
+const express = require('express');
+const UsersController = require('../controllers/users');
+const User = require('../models/user');
+const message = require('../utils/message.json');
 
 const router = express.Router();
 
@@ -55,4 +55,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

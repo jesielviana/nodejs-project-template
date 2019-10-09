@@ -1,12 +1,12 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import helmet from 'helmet';
-import morgan from 'morgan';
-import routes from './routes';
-import database from './config/database';
-import Config from './config/config';
-import logger from './config/logger';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const routes = require('./routes');
+const database = require('./config/database');
+const Config = require('./config/config');
+const logger = require('./config/logger');
 
 const app = express();
 
@@ -30,4 +30,4 @@ const configureExpress = () => {
   return app;
 };
 
-export default () => database.connect().then(configureExpress);
+module.exports = () => database().then(configureExpress);

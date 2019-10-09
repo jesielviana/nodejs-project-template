@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
-import Config from './config';
+const mongoose = require('mongoose');
+const Config = require('./config');
+
 
 mongoose.Promise = Promise;
 
@@ -17,6 +18,4 @@ const configuracoes = {
 const connect = () => mongoose.connect(mongodbUrl, configuracoes);
 
 
-export default {
-  connect,
-};
+module.exports = connect;

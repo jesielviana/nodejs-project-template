@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
 
 const SALT_WORK_FACTOR = 10;
 
@@ -48,4 +48,4 @@ schema.methods.comparePassword = function (candidatePassword) {
 
 const User = mongoose.model('User', schema);
 
-export default User;
+module.exports = User;

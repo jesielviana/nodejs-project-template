@@ -1,5 +1,5 @@
-import setupApp from './src/app';
-import Config from './src/config/config';
+const Config = require('./src/config/config');
+const setupApp = require('./src/app');
 
 setupApp()
   .then((app) => app.listen(Config.PORT, () => console.info(`app running on port ${Config.PORT}`)))

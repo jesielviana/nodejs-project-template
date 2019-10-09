@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 /* eslint-disable max-classes-per-file */
 /* eslint-disable class-methods-use-this */
-import sinon from 'sinon';
-import UsersController from '../../../src/controllers/users';
-import User from '../../../src/models/user';
+const sinon = require('sinon');
+const UsersController = require('../../../src/controllers/users');
+const User = require('../../../src/models/user');
 
 describe('Controller: Users', () => {
   const defaultUser = [

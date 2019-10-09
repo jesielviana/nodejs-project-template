@@ -1,4 +1,4 @@
-export class Config {
+class Config {
   constructor() {
     this.env = 'development';
     this.PORT = 3000;
@@ -8,3 +8,5 @@ export class Config {
     this.MONGODB_URL = `mongodb://${DB_HOST}':'${DB_PORT}/db_dev`;
   }
 }
+
+module.exports = new Config();

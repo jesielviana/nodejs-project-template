@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 /* global setupApp supertest expect */
-import User from '../../../src/models/user';
-import Config from '../../../src/config/config';
-import message from '../../../src/utils/message.json';
+const User = require('../../../src/models/user');
+const Config = require('../../../src/config/config');
+const message = require('../../../src/utils/message.json');
 
 describe('Routes: users', () => {
   let request;
