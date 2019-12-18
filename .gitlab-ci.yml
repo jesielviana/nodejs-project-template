@@ -9,8 +9,9 @@ variables:
 
 
 stages:
-  - build
+  - install
   - test
+  - production
 
 cache:
   paths:
@@ -19,16 +20,29 @@ cache:
 services:
   - mongo
   
-install_dependencies:
-  stage: build
+install:
+  stage: install
   script:
     - npm install
   artifacts:
     paths:
       - node_modules/
   
-test_with_lab:
+test:
   stage: test
   script: 
     - npm test
+
+production:
+  type: deploy
+  stage: production
+  image: ruby:latest
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=nodejs-project-template --api-key=$HEROKU_API_KEY --skip_cleanup
+  only:
+    - master
+
     
