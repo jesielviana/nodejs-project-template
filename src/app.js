@@ -10,7 +10,7 @@ const logger = require('./config/logger')
 const app = express()
 
 const configureExpress = () => {
-  app.use(cors()) // permitir requesição de um dominio diferente
+  app.use(cors()) // https://github.com/expressjs/cors
   app.use(helmet()) // https://helmetjs.github.io/
   app.use(express.json())
   app.use(
