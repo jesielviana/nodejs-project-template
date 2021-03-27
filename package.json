@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "lint": "eslint server.js src test",
-    "lint:fix": "eslint server.js src test --fix",
+    "lint": "standard server.js src test",
+    "lint:fix": "standard server.js src test --fix",
     "debug": "node --nolazy --inspect-brk=9229 ./server.js",
     "start": "node ./server.js",
     "dev": "node ./server.js",
@@ -17,19 +17,17 @@
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2",
     "mocha": "^5.2.0",
     "sinon": "^7.2.2",
+    "standard": "^16.0.3",
     "supertest": "^3.3.0"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "helmet": "^3.21.1",
+    "express-validator": "^6.10.0",
+    "helmet": "^4.4.1",
     "mongoose": "^5.7.3",
     "mongoose-unique-validator": "^2.0.2",
     "morgan": "^1.9.1",
